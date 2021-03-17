@@ -1,9 +1,9 @@
 #include "Headers/Crab.h"
+#include "Headers/GameObject.h"
 #include "Headers/Model.h"
 #include "Headers/Vector.h"
 
-Crab::Crab(Model& model): GameObject(model)
-{ }
+using namespace Structs;
 
-Crab::Crab(Model& model, Structs::Vector pos): GameObject(model, pos)
+Crab::Crab(Model& model, Vector pos, float speed): GameObject(model, pos, speed)
 { }

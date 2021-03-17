@@ -16,6 +16,8 @@
 #include <fstream>
 #include <iostream>
 #include <map>
+#include <memory>
+#include <utility>
 #include <vector>
 
 #include "Headers/Ant.h"
@@ -33,8 +35,7 @@ using namespace Structs;
 
 std::vector<Vector> backgroundStars;
 std::map<std::string, Model> models;
-Ship player = Ship();
-std::vector<GameObject> gameObjs;
+std::vector<std::unique_ptr<GameObject>> gameObjs;
 
 void loadBackgroundStars(std::string filePath) {
     std::ifstream file(filePath);
@@ -53,17 +54,6 @@ void loadBackgroundStars(std::string filePath) {
     }
 }
 
-void drawBackgroundStars() {
-    glPointSize(1.5f);
-    //glColor3ub(150, 0, 100); // Pink
-    glColor3ub(119, 28, 217); // Purple
-    //glColor3ub(230, 208, 16); // Yellow
-    glBegin(GL_POINTS);
-        for (auto& star : backgroundStars)
-            glVertex2f(star.x, star.y);
-    glEnd();
-}
-
 void loadModels() {
     loadModel("Assets/Ship.txt", "Ship", models);
     loadModel("Assets/Ant.txt", "Ant", models);
@@ -73,9 +63,8 @@ void loadModels() {
 }
 
 void loadGameObjects() {
-    player.setModel(models.at("Ship"));
-    player.initAABB();
-    player.printAABB();
+    std::unique_ptr<Ship> player = std::make_unique<Ship>(models.at("Ship"), 6.0f);
+    gameObjs.push_back(std::move(player));
 
     int x = -90;
     int y = 90;
@@ -88,8 +77,8 @@ void loadGameObjects() {
         }
         
         Vector pos(x, y);
-        Ant ant = Ant(models.at("Ant"), pos);
-        gameObjs.push_back(ant);
+        std::unique_ptr<Ant> ant = std::make_unique<Ant>(models.at("Ant"), pos, 1.0f);
+        gameObjs.push_back(std::move(ant));
         x += 15;
     }
 
@@ -100,8 +89,8 @@ void loadGameObjects() {
             y -= 15;
         }
         Vector pos(x, y);
-        Crab crab = Crab(models.at("Crab"), pos);
-        gameObjs.push_back(crab);
+        std::unique_ptr<Crab> crab = std::make_unique<Crab>(models.at("Crab"), pos, 2.0f);
+        gameObjs.push_back(std::move(crab));
         x += 15;
     }
 
@@ -112,8 +101,8 @@ void loadGameObjects() {
             y -= 15;
         }
         Vector pos(x, y);
-        Octopus octopus = Octopus(models.at("Octopus"), pos);
-        gameObjs.push_back(octopus);
+        std::unique_ptr<Octopus> octopus = std::make_unique<Octopus>(models.at("Octopus"), pos, 3.0f);
+        gameObjs.push_back(std::move(octopus));
         x += 15;
     }
 
@@ -124,29 +113,10 @@ void loadGameObjects() {
             y -= 15;
         }
         Vector pos(x, y);
-        Squid squid = Squid(models.at("Squid"), pos);
-        gameObjs.push_back(squid);
+        std::unique_ptr<Squid> squid = std::make_unique<Squid>(models.at("Squid"), pos, 4.0f);
+        gameObjs.push_back(std::move(squid));
         x += 15;
     }
-}
-
-void drawGameObjects() {
-    player.draw();
-    
-    for (GameObject& obj : gameObjs) {
-        obj.draw();
-    }
-}
-
-void init() {
-    glClearColor(0.1f, 0.0f, 0.2f, 1.0f); // Background color
-
-    // glShadeModel(GL_SMOOTH);						
-	// glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
-
-    loadBackgroundStars("Assets/BackgroundStars.txt");
-    loadModels();
-    loadGameObjects();
 }
 
 void drawAxes() {
@@ -162,12 +132,38 @@ void drawAxes() {
     glEnd();
 }
 
-void drawGameObjectsAABBs() {
-    player.drawAABB();
-    
-    for (GameObject& obj : gameObjs) {
-        obj.drawAABB();
+void drawBackgroundStars() {
+    glPointSize(1.5f);
+    //glColor3ub(150, 0, 100); // Pink
+    glColor3ub(119, 28, 217); // Purple
+    //glColor3ub(230, 208, 16); // Yellow
+    glBegin(GL_POINTS);
+        for (auto& star : backgroundStars)
+            glVertex2f(star.x, star.y);
+    glEnd();
+}
+
+void drawGameObjects() {
+    for (auto& obj : gameObjs) {
+        obj->draw();
     }
+}
+
+void drawGameObjectsAABBs() {
+    for (auto& obj : gameObjs) {
+        obj->drawHitBox();
+    }
+}
+
+void init() {
+    glClearColor(0.1f, 0.0f, 0.2f, 1.0f); // Background color
+
+    // glShadeModel(GL_SMOOTH);						
+	// glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
+
+    loadBackgroundStars("Assets/BackgroundStars.txt");
+    loadModels();
+    loadGameObjects();
 }
 
 void display() {
@@ -198,20 +194,20 @@ void reshape(int w, int h) {
 void keyboard(unsigned char key, int x, int y) {
 	switch (key) {
         case 'w':
-            player.moveForward();
-            glutPostRedisplay();
+            gameObjs.at(0)->moveForward();
+            // glutPostRedisplay();
             break;
         case 's':
-            player.moveBackward();
-            glutPostRedisplay();
+            gameObjs.at(0)->moveBackward();
+            // glutPostRedisplay();
             break;
         case 'a':
-            player.rotateLeft();
-            glutPostRedisplay();
+            gameObjs.at(0)->rotateLeft();
+            // glutPostRedisplay();
             break;
         case 'd':
-            player.rotateRight();
-            glutPostRedisplay();
+            gameObjs.at(0)->rotateRight();
+            // glutPostRedisplay();
             break;
         case 'f':
 			glutFullScreen();

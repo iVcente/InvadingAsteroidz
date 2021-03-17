@@ -1,9 +1,9 @@
+#include "Headers/GameObject.h"
 #include "Headers/Model.h"
 #include "Headers/Octopus.h"
 #include "Headers/Vector.h"
 
-Octopus::Octopus(Model& model): GameObject(model)
-{ }
+using namespace Structs;
 
-Octopus::Octopus(Model& model, Structs::Vector pos): GameObject(model, pos)
+Octopus::Octopus(Model& model, Vector pos, float speed): GameObject(model, pos, speed)
 { }

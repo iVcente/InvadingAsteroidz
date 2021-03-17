@@ -12,7 +12,8 @@
 struct Color {
     int r, g, b;
 
-    Color(int r, int g, int b): r(r), g(g), b(b) { }
+    Color(int r, int g, int b): r(r), g(g), b(b) 
+    { }
 };
 
 struct Model {
@@ -23,7 +24,7 @@ struct Model {
     Model(): dimensions(), pixels() 
     { }
 
-    void print() {
+    void print() const {
         std::cout << "Colors:\n";
         for (const auto& color : colors)
             std::cout << color.first << " -> " << color.second.r << " " << color.second.g << " " << color.second.b << "\n";

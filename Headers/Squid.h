@@ -7,8 +7,7 @@
 
 class Squid: public GameObject {
     public:
-        Squid(Model& model);
-        Squid(Model& model, Structs::Vector pos);
+        Squid(Model& model, Structs::Vector pos, float speed);
 };
 
 #endif

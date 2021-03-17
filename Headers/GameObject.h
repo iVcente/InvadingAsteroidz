@@ -6,25 +6,31 @@
 #include "Vector.h"
 
 class GameObject {
+    public:
+        Structs::Vector getDimensions() const;
+        Structs::Vector getPosition() const;
+        virtual void draw() const;
+        virtual void drawHitBox() const;
+        virtual void moveForward();
+        virtual void moveBackward();
+        virtual void rotateLeft();
+        virtual void rotateRight();
+        void printAABB() const;
+
     protected:
+        GameObject(Model model, float speed);
+        GameObject(Model model, Structs::Vector pos, float speed);
+        GameObject(Model model, float speed, Structs::Vector direction);
+        const float scale = 0.5f;
+        const Model model;
+        float currentRotation = 0.0f;
+        float speed;
         Structs::Vector position;
         Structs::Vector direction;
-        Structs::AABB boundingBox;
-        float speed;
-        float scale = 0.5f;
-        float currentRotation = 0.0f;
-        Model model;
-        GameObject();
-        GameObject(Model& model);
-        GameObject(Model& model, Structs::Vector position);
+        Structs::AABB hitBox;
 
-    public:
-        void draw();
-        void drawAABB();
-        Structs::AABB initAABB();
-        Structs::Vector getDimensions();
-        Structs::Vector getPosition();
-        void printAABB();
+    private:
+        Structs::AABB initHitBox();
 };
 
 #endif

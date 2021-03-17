@@ -21,26 +21,25 @@
 
 using namespace Structs;
 
-GameObject::GameObject(): position(0.0f, 0.0f)
-{ }
-
-GameObject::GameObject(Model& model): model(model), position(0.0f, 0.0f), boundingBox(initAABB())
-{ }
-
-GameObject::GameObject(Model& model, Vector pos): model(model), position(pos), boundingBox(initAABB())
-{ }
-
-void GameObject::drawAABB() {
-    glColor3ub(255, 0, 0);
-    glBegin(GL_LINE_LOOP);
-        glVertex2f(boundingBox.a.x, boundingBox.a.y);
-        glVertex2f(boundingBox.b.x, boundingBox.b.y);
-        glVertex2f(boundingBox.c.x, boundingBox.c.y);
-        glVertex2f(boundingBox.d.x, boundingBox.d.y);
-    glEnd();
+Vector GameObject::getDimensions() const {
+    return model.dimensions;
 }
 
-void GameObject::draw() {
+Vector GameObject::getPosition() const {
+    return position;
+}
+
+GameObject::GameObject(Model model, float speed): model(model), position(Vector(0.0f, 0.0f)), speed(speed),
+                                                  hitBox(initHitBox())
+{ }
+GameObject::GameObject(Model model, Vector pos, float speed): model(model), position(pos), speed(speed),
+                                                              hitBox(initHitBox())
+{ }
+GameObject::GameObject(Model model, float speed, Vector direction): model(model), speed(speed), 
+                                                                    hitBox(initHitBox()), direction(direction)
+{ }
+
+void GameObject::draw() const {
     Vector dimensions = model.dimensions;
     int rows = model.pixels.getNumRows();
     int columns = model.pixels.getNumColumns();
@@ -75,26 +74,28 @@ void GameObject::draw() {
     glPopMatrix();
 }
 
-Vector GameObject::getPosition() {
-    return position;
+void GameObject::drawHitBox() const {
+    glColor3ub(255, 0, 0);
+    glBegin(GL_LINE_LOOP);
+        glVertex2f(hitBox.position.x - hitBox.halfSize, position.y + hitBox.halfSize);
+        glVertex2f(hitBox.position.x + hitBox.halfSize, hitBox.position.y + hitBox.halfSize);
+        glVertex2f(hitBox.position.x + hitBox.halfSize, hitBox.position.y - hitBox.halfSize);
+        glVertex2f(hitBox.position.x - hitBox.halfSize, hitBox.position.y - hitBox.halfSize);
+    glEnd();
 }
 
-Vector GameObject::getDimensions() {
-    return model.dimensions;
+void GameObject::printAABB() const {
+    hitBox.print();
 }
 
-AABB GameObject::initAABB() {
-    float m = getDimensions().x * 0.7;
-    float n = getDimensions().y * scale;
+AABB GameObject::initHitBox() {
+    float m = getDimensions().y * scale;
+    float n = getDimensions().x * scale;
 
-    Vector a = Vector(position.x - (m / 2), position.y + (n / 2));
-    Vector b = Vector(position.x + (m / 2), position.y + (n / 2));
-    Vector c = Vector(position.x + (m / 2), position.y - (n / 2));
-    Vector d = Vector(position.x - (m / 2), position.y - (n / 2));
-
-    return AABB(a, b, c, d);
+    return AABB(position, m >= n ? (m/2) : (n/2));
 }
 
-void GameObject::printAABB() {
-    boundingBox.print();
-}
+void GameObject::moveForward() { }
+void GameObject::moveBackward() { }
+void GameObject::rotateLeft() { }
+void GameObject::rotateRight() { }

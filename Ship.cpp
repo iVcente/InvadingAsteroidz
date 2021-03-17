@@ -4,22 +4,17 @@
 
 using namespace Structs;
 
-Ship::Ship(): GameObject(), direction(0, 1)
+Ship::Ship(Model model, float speed): GameObject(model, speed, Vector(0.0f, 1.0f))
 { }
-
-Ship::Ship(Model& model): GameObject(model), direction(0, 1)
-{ }
-
-void Ship::setModel(Model& m) {
-    model = m;
-}
 
 void Ship::moveForward() {
     position = position + (direction * speed);
+    hitBox.position = position;
 }
 
 void Ship::moveBackward() {
     position = position - (direction * speed);
+    hitBox.position = position;
 }
 
 void Ship::rotateLeft() {

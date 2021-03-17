@@ -7,8 +7,7 @@
 
 class Ant: public GameObject {
     public:
-        Ant(Model& model);
-        Ant(Model& model, Structs::Vector pos);
+        Ant(Model& model, Structs::Vector pos, float speed);
 };
 
 #endif

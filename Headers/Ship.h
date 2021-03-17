@@ -7,20 +7,15 @@
 #include "Vector.h"
 
 class Ship: public GameObject {
-    private:
-        Structs::Vector direction;
-        float speed = 6.0f;
-        float rotationAngle = 10.0f;
-        // float currentRotation = 0.0f;
-
     public:
-        Ship();
-        Ship(Model& model);
-        void setModel(Model& model);
-        void moveForward();
-        void moveBackward();
-        void rotateLeft();
-        void rotateRight();
+        Ship(Model model, float speed);
+        void moveForward() override;
+        void moveBackward() override;
+        void rotateLeft() override;
+        void rotateRight() override;
+    
+    private:
+        float rotationAngle = 17.5f;
 };
 
 #endif

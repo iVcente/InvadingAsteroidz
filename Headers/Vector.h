@@ -7,24 +7,59 @@ namespace Structs {
     struct Vector {
         float x, y;
 
-        Vector(): x(0.0f), y(0.0f) { }
-        Vector(float x, float y): x(x), y(y) { }
+        Vector(): x(0.0f), y(0.0f) 
+        { }
+        Vector(float x, float y): x(x), y(y) 
+        { }
 
-        void print() {
+        void print() const {
             std::cout << "(" << x << ", " << y << ")\n";
         }
 
         Vector operator+(const Vector& v) {
-            return Vector(x + v.x, y + v.y);
+            Vector vector = Vector();
+            vector.x = x + v.x;
+            vector.y = y + v.y;
+
+            return vector;
         }
 
         Vector operator-(const Vector& v) {
-            return Vector(x - v.x, y - v.y);
+            Vector vector = Vector();
+            vector.x = x - v.x;
+            vector.y = y - v.y;
+
+            return vector;
         }
 
         Vector operator*(const float k) {
-            return Vector(x * k, y * k);
+            Vector vector = Vector();
+            vector.x = x * k;
+            vector.y = y * k;
+
+            return vector;
         }
+
+        // Vector& operator+(const Vector& v) {
+        //     x = x + v.x;
+        //     y = y + v.y;
+
+        //     return *this;
+        // }
+
+        // Vector& operator-(const Vector& v) {
+        //     x = x - v.x;
+        //     y = y - v.y;
+
+        //     return *this;
+        // }
+
+        // Vector& operator*(const float k) {
+        //     x = x * k;
+        //     y = y * k;
+
+        //     return *this;
+        // }
     };
 }
 

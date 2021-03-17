@@ -1,9 +1,9 @@
+#include "Headers/GameObject.h"
 #include "Headers/Model.h"
 #include "Headers/Squid.h"
 #include "Headers/Vector.h"
 
-Squid::Squid(Model& model): GameObject(model)
-{ }
+using namespace Structs;
 
-Squid::Squid(Model& model, Structs::Vector pos): GameObject(model, pos)
+Squid::Squid(Model& model, Vector pos, float speed): GameObject(model, pos, speed)
 { }

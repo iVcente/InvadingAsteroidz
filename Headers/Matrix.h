@@ -41,13 +41,17 @@ namespace Structs {
                 return data.at(y).at(x);
             }
 
+            T at(const int y, const int x) const {
+                return data.at(y).at(x);
+            }
+
             void resize(const int y, const int x) {
                 data.resize(y);
                 for (int i = 0; i < y; i ++)
                     data.at(i).resize(x);
             }
 
-            void print() {
+            void print() const {
                 for (auto& row : data) {
                     for (auto& element : row)
                         std::cout << element << " ";

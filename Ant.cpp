@@ -1,9 +1,9 @@
 #include "Headers/Ant.h"
+#include "Headers/GameObject.h"
 #include "Headers/Model.h"
 #include "Headers/Vector.h"
 
-Ant::Ant(Model& model): GameObject(model)
-{ }
+using namespace Structs;
 
-Ant::Ant(Model& model, Structs::Vector pos): GameObject(model, pos)
+Ant::Ant(Model& model, Vector pos, float speed): GameObject(model, pos, speed)
 { }

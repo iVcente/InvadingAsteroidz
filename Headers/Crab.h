@@ -7,8 +7,7 @@
 
 class Crab: public GameObject {
     public:
-        Crab(Model& model);
-        Crab(Model& model, Structs::Vector pos);
+        Crab(Model& model, Structs::Vector pos, float speed);
 };
 
 #endif
