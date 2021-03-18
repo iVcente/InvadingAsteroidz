@@ -26,6 +26,7 @@
 #include "Headers/Matrix.h"
 #include "Headers/Model.h"
 #include "Headers/Octopus.h"
+#include "Headers/Physics.h"
 #include "Headers/Ship.h"
 #include "Headers/Square.h"
 #include "Headers/Squid.h"
@@ -63,7 +64,7 @@ void loadModels() {
 }
 
 void loadGameObjects() {
-    std::unique_ptr<Ship> player = std::make_unique<Ship>(models.at("Ship"), 6.0f);
+    std::unique_ptr<Ship> player = std::make_unique<Ship>(models.at("Ship"), 5.8f);
     gameObjs.push_back(std::move(player));
 
     int x = -90;
@@ -186,7 +187,7 @@ void reshape(int w, int h) {
     // Defines the OpenGL area to be used within the window
     glViewport(0, 0, w, h);
     // Defines the OpenGL area logical limits within the window
-    glOrtho(-100, 100, -100, 100, 0, 1);
+    glOrtho(MIN_X, MAX_X, MIN_Y, MAX_Y, 0, 1);
 
     glutPostRedisplay();
 }

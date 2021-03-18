@@ -8,13 +8,19 @@ Ship::Ship(Model model, float speed): GameObject(model, speed, Vector(0.0f, 1.0f
 { }
 
 void Ship::moveForward() {
-    position = position + (direction * speed);
-    hitBox.position = position;
+    Vector newPosition = position + (direction * speed);
+    if (insideBoundaries(hitBox, newPosition)) {
+        position = newPosition;
+        hitBox.position = position;
+    }
 }
 
 void Ship::moveBackward() {
-    position = position - (direction * speed);
-    hitBox.position = position;
+    Vector newPosition = position - (direction * speed);
+    if (insideBoundaries(hitBox, newPosition)) {
+        position = newPosition;
+        hitBox.position = position;
+    }
 }
 
 void Ship::rotateLeft() {
