@@ -120,6 +120,27 @@ void loadGameObjects() {
     }
 }
 
+void checkPlayerCollisions() {
+    for (int i = 1; i < gameObjs.size(); i++) {
+        if (checkCollision(gameObjs.at(0)->getHitBox(), gameObjs.at(i)->getHitBox())) {
+            gameObjs.erase(gameObjs.begin() + i);
+            gameObjs.at(0)->gotHit();
+            break;
+        }
+    }
+}
+
+void checkProjectilesCollisions() {
+    for (int i = 1; i < gameObjs.size(); i++) {
+        if (checkCollision(gameObjs.at(0)->getHitBox(), gameObjs.at(i)->getHitBox()))
+            gameObjs.erase(gameObjs.begin() + i);
+    }
+}
+
+void checkCollisions() {
+    checkPlayerCollisions();
+}
+
 void drawAxes() {
 	glColor3ub(255, 255, 255);
 
@@ -145,14 +166,24 @@ void drawBackgroundStars() {
 }
 
 void drawGameObjects() {
-    for (auto& obj : gameObjs) {
-        obj->draw();
-    }
+    for (auto& obj : gameObjs)
+            obj->draw();
 }
 
 void drawGameObjectsAABBs() {
-    for (auto& obj : gameObjs) {
+    for (auto& obj : gameObjs)
         obj->drawHitBox();
+}
+
+void isGameOver() {
+    if (gameObjs.at(0)->isDead()) {
+        std::cout << "THE ALIENS ANNIHILATED AND EXTINCTED ALL MANKIND. \n";
+        exit(EXIT_SUCCESS);
+    }
+
+    if (gameObjs.size() == 1) {
+        std::cout << "YOU HAVE SAVED ALL MANKIND!\n";
+        exit(EXIT_SUCCESS);
     }
 }
 
@@ -176,6 +207,9 @@ void display() {
     drawBackgroundStars();
     drawGameObjects();
     drawGameObjectsAABBs();
+    checkCollisions();
+    isGameOver();
+
     glutSwapBuffers();
     glutPostRedisplay();
 }

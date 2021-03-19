@@ -29,14 +29,20 @@ Vector GameObject::getPosition() const {
     return position;
 }
 
-GameObject::GameObject(Model model, float speed): model(model), position(Vector(0.0f, 0.0f)), speed(speed),
-                                                  hitBox(initHitBox())
+AABB GameObject::getHitBox() const {
+    return hitBox;
+}
+
+GameObject::GameObject(Model model, float speed): 
+    model(model), position(Vector(0.0f, 0.0f)), speed(speed), hitBox(initHitBox())
 { }
-GameObject::GameObject(Model model, Vector pos, float speed): model(model), position(pos), speed(speed),
-                                                              hitBox(initHitBox())
+
+GameObject::GameObject(Model model, Vector pos, float speed): 
+    model(model), position(pos), speed(speed), hitBox(initHitBox())
 { }
-GameObject::GameObject(Model model, float speed, Vector direction): model(model), speed(speed), 
-                                                                    hitBox(initHitBox()), direction(direction)
+
+GameObject::GameObject(Model model, float speed, Vector direction): 
+    model(model), speed(speed), hitBox(initHitBox()), direction(direction)
 { }
 
 void GameObject::draw() const {
@@ -77,10 +83,10 @@ void GameObject::draw() const {
 void GameObject::drawHitBox() const {
     glColor3ub(255, 0, 0);
     glBegin(GL_LINE_LOOP);
-        glVertex2f(hitBox.position.x - hitBox.halfSize, position.y + hitBox.halfSize);
-        glVertex2f(hitBox.position.x + hitBox.halfSize, hitBox.position.y + hitBox.halfSize);
-        glVertex2f(hitBox.position.x + hitBox.halfSize, hitBox.position.y - hitBox.halfSize);
-        glVertex2f(hitBox.position.x - hitBox.halfSize, hitBox.position.y - hitBox.halfSize);
+        glVertex2f(hitBox.center.x - hitBox.halfSize, position.y + hitBox.halfSize);
+        glVertex2f(hitBox.center.x + hitBox.halfSize, hitBox.center.y + hitBox.halfSize);
+        glVertex2f(hitBox.center.x + hitBox.halfSize, hitBox.center.y - hitBox.halfSize);
+        glVertex2f(hitBox.center.x - hitBox.halfSize, hitBox.center.y - hitBox.halfSize);
     glEnd();
 }
 
@@ -95,6 +101,8 @@ AABB GameObject::initHitBox() {
     return AABB(position, m >= n ? (m/2) : (n/2));
 }
 
+void GameObject::gotHit() { }
+bool GameObject::isDead() const { return true; }
 void GameObject::moveForward() { }
 void GameObject::moveBackward() { }
 void GameObject::rotateLeft() { }

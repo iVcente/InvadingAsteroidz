@@ -11,6 +11,15 @@ const float MAX_Y = +100.0f;
 const float MIN_X = -100.0f;
 const float MIN_Y = -100.0f;
 
+inline bool checkCollision(Structs::AABB b1, Structs::AABB b2 ) {
+    if (abs(b1.center.x - b2.center.x) > (b1.halfSize + b2.halfSize))
+        return false;
+    if (abs(b1.center.y - b2.center.y) > (b1.halfSize + b2.halfSize))
+        return false;
+
+    return true;
+}
+
 inline float degreesToRadian(float angleInDegrees) {
     return (angleInDegrees * M_PI) / 180.0;
 }
@@ -25,18 +34,6 @@ inline bool insideBoundaries(Structs::AABB hitBox, Structs::Vector newPosition) 
         return true;
 
     return false;
-
-    // if ((top >= -MAX_DEPTH) && (bottom <= -MIN_DEPTH) && (left >= MIN_WIDTH) && (right <= (MAX_WIDTH/2 - 0.5f)))
-    //     return true;
-
-    // return false;
-
-    /*
-    if ((top <= -MAX_DEPTH) || (bottom >= -MIN_DEPTH) || (left <= MIN_WIDTH) || (right >= (MAX_WIDTH/2 - 0.5f)))
-        return false;
-
-    return true;
-    */
 }
 
 #endif

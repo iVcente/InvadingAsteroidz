@@ -7,12 +7,12 @@
 
 namespace Structs {
     struct AABB {
-        Vector position;
+        Vector center;
         float halfSize;
 
-        AABB(): position(Vector(0.0f, 0.0f)), halfSize(0.0f) 
+        AABB(): center(Vector(0.0f, 0.0f)), halfSize(0.0f) 
         { }
-        AABB(Vector position, float halfSize): position(position), halfSize(halfSize)
+        AABB(Vector center, float halfSize): center(center), halfSize(halfSize)
         { }
 
         void print() const {

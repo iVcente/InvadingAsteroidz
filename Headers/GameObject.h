@@ -9,8 +9,11 @@ class GameObject {
     public:
         Structs::Vector getDimensions() const;
         Structs::Vector getPosition() const;
+        Structs::AABB getHitBox() const;
         virtual void draw() const;
         virtual void drawHitBox() const;
+        virtual void gotHit();
+        virtual bool isDead() const;  
         virtual void moveForward();
         virtual void moveBackward();
         virtual void rotateLeft();
